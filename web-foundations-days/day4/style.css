@@ -1,0 +1,51 @@
+:root { 
+    --background-color: white; 
+    --text-color: black; 
+    --input-background: white; 
+    --input-border: #ccc; 
+    --button-background: #eee; 
+} 
+body.dark { 
+    --background-color: #222; 
+    --text-color: white; 
+    --input-background: #333; 
+    --input-border: #555; 
+    --button-background: #444; 
+} * { 
+    box-sizing: border-box; 
+} 
+body { 
+    background-color: var(--background-color); 
+    color: var(--text-color); 
+    font-family: Arial, sans-serif; 
+    margin: 0; padding: 20px; 
+} 
+main { 
+    max-width: 600px; 
+    margin: 0 auto; 
+} 
+textarea { 
+    width: 100%; 
+    min-height: 200px; 
+    background-color: var(--input-background); 
+    color: var(--text-color); 
+    border: 1px solid var(--input-border); 
+    padding: 10px; 
+    margin-top: 8px; 
+    resize: vertical; 
+} 
+button { 
+    background-color: var(--button-background); 
+    color: var(--text-color); 
+    border: 1px solid var(--input-border); 
+    padding: 8px 12px; 
+    margin-right: 8px; 
+    cursor: pointer; 
+} 
+.warning { 
+    color: orange; 
+} 
+.over { 
+    color: red; 
+    font-weight: bold; 
+}
