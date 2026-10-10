@@ -166,6 +166,7 @@ This separation allows photo storage to scale independently while keeping databa
 
 ## 5. Architecture Diagram
 
+```text
  Users
    |
   CDN -------------------- Object Storage
@@ -181,6 +182,7 @@ This separation allows photo storage to scale independently while keeping databa
  Primary Database
    |
  Read Replica
+```
 
 **How it works:** The CDN serves cached images, while the load balancer distributes requests to app servers. App servers use the cache and database for feed data, store photos in object storage, and send thumbnail jobs to the queue for background processing. The read replica handles additional database reads.
 
