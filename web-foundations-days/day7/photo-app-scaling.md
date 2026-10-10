@@ -166,73 +166,26 @@ This separation allows photo storage to scale independently while keeping databa
 
 ## 5. Architecture Diagram
 
-```text
-                         +------------------+
-                         |      Users       |
-                         +--------+---------+
-                                  |
-                                  v
-                         +------------------+
-                         |       CDN        |
-                         | Cached Images    |
-                         +--------+---------+
-                                  |
-                                  v
-                         +------------------+
-                         |  Load Balancer   |
-                         +--------+---------+
-                                  |
-                    +-------------+-------------+
-                    |             |             |
-                    v             v             v
-              +-----------+ +-----------+ +-----------+
-              | App Server| | App Server| | App Server|
-              +-----+-----+ +-----+-----+ +-----+-----+
-                    |             |             |
-                    +-------------+-------------+
-                                  |
-                         +--------+--------+
-                         |                 |
-                         v                 v
-                  +------------+    +-------------+
-                  | Cache      |    | Main        |
-                  | Feed/Data  |    | Database    |
-                  +------------+    | (Primary)   |
-                                    +------+------+
-                                           |
-                                           | Replication
-                                           v
-                                    +-------------+
-                                    | Read Replica|
-                                    +-------------+
-
-              Upload processing:
-
-              +-------------+       +----------------+
-              | App Server  |------>| Object Storage |
-              |             |       | Original Photos|
-              +------+------+       +----------------+
-                     |
-                     v
-              +-------------+
-              | Message     |
-              | Queue       |
-              +------+------+
-                     |
-                     v
-              +-------------+
-              | Thumbnail   |
-              | Worker      |
-              +------+------+
-                     |
-                     v
-              +----------------+
-              | Object Storage |
-              | Thumbnails     |
-              +----------------+
+```
+ Users
+   |
+  CDN -------------------- Object Storage
+   |                       (photos/thumbnails)
+ Load Balancer
+   |
+ App Servers ----------- Message Queue
+   |                         |
+   |                    Thumbnail Worker
+   |
+ Cache
+   |
+ Primary Database
+   |
+ Read Replica
 ```
 
-The diagram represents the logical architecture. The CDN serves cached images directly when possible, while the load balancer routes application requests to healthy app servers.
+**How it works:** The CDN serves cached images, while the load balancer distributes requests to app servers. App servers use the cache and database for feed data, store photos in object storage, and send thumbnail jobs to the queue for background processing. The read replica handles additional database reads.
+
 
 ## 6. Component Descriptions
 
