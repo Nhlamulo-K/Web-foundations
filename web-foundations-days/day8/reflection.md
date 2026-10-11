@@ -1,0 +1,7 @@
+# Reflection
+
+The most difficult concept in the course was understanding how a system can handle many requests at the same time without producing incorrect results. It was easy to think that checking whether a seat was available would be enough, but two users could check the same seat before either purchase finished. I worked through this by breaking the process into steps and connecting database transactions, row locks, constraints, and temporary holds. This helped me understand why the database must make the final decision rather than relying on what the user sees on the page.
+
+Based on the feedback I received on my capstone work, I would improve the architecture diagram and make sure the document is complete and easy to follow. The diagram should be smaller, clearer, and focused on the main request flow, with explanations placed below it. I would also check that every required section is included before submitting, instead of allowing the document to end abruptly or leaving important details out. This would make the design easier for another developer to review.
+
+Next, I want to learn more about database transactions and indexing, API testing, and load testing. I would like to practise measuring response times under heavy traffic and learn how tools such as Docker and cloud monitoring can help deploy and operate an application reliably. I will apply these skills by improving my projects step by step and documenting the decisions I make.
