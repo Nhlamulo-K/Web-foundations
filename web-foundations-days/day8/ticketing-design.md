@@ -135,48 +135,34 @@ The database, rather than the seat map displayed in the browser, makes the final
 ## 6. Architecture Diagram
 
 ```text
-       ┌─────────────────┐
-       │ Web / Mobile App│
-       └────────┬────────┘
-                ▼
-       ┌─────────────────┐
-       │ CDN + Rate Limit│
-       └────────┬────────┘
-                ▼
-       ┌─────────────────┐
-       │ Waiting Queue   │
-       └────────┬────────┘
-                ▼
-       ┌─────────────────┐
-       │ API Gateway     │
-       └────┬────────┬───┘
-            ▼        ▼
-       ┌─────────┐ ┌───────────┐
-       │ Event   │ │ Hold and  │
-       │ API     │ │ Order API │
-       └────┬────┘ └─────┬─────┘
-            ▼            ▼
-       ┌─────────┐ ┌───────────┐
-       │ Cache   │ │ PostgreSQL│
-       └─────────┘ └─────┬─────┘
-                         ▼
-                   ┌───────────┐
-                   │ Payment   │
-                   │ Provider  │
-                   └───────────┘
+Web / Mobile App
+       |
+CDN and Rate Limits
+       |
+Waiting Queue
+       |
+API Gateway
+       |
+   +---+---+
+   |       |
+Event API  Hold / Order API
+   |       |
+Cache   PostgreSQL
+           |
+    Payment Provider
 ```
 
 ### Component Explanations
 
-- **CDN:** Serves static content and reduces load on the backend.
-- **Waiting queue:** Controls how many customers enter the purchasing system.
-- **API gateway:** Routes requests and applies authentication and rate limits.
-- **Event API and cache:** Handle browsing requests efficiently.
-- **Hold and order API:** Manages seat reservations and purchases.
-- **PostgreSQL:** Stores authoritative seat and order data and prevents double-booking through transactions and constraints.
-- **Payment provider:** Processes payments securely and sends confirmation to TicketHub.
+- **CDN:** Caches static content to reduce server load.
+- **Waiting Queue:** Controls incoming traffic during popular sales.
+- **API Gateway:** Routes requests and applies authentication and rate limits.
+- **Event API and Cache:** Handle browsing requests efficiently.
+- **Hold / Order API:** Manages seat reservations and purchases.
+- **PostgreSQL:** Stores seat and order data and prevents double-booking using transactions and constraints.
+- **Payment Provider:** Processes payments securely.
 
-During a popular sale, the queue controls incoming traffic, cached event information reduces database requests, and additional API instances can handle more users. Database transactions protect seat ownership, while monitoring and load testing help identify capacity problems.
+During the big sale, the queue limits incoming traffic, caching reduces database requests, and additional API instances handle increased demand. Database transactions protect seat ownership, while monitoring and load testing help identify capacity problems.
 
 ## 7. Trade-Offs
 
